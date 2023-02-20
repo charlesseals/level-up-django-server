@@ -7,7 +7,7 @@
             "game": 2,
             "location": "Austin, TX",
             "time": "2024-01-17T14:45:00.000Z",
-            "name": "Falcon Five Function"
+            "con_name": "Falcon Five Function"
         }
     },
     {
@@ -18,7 +18,7 @@
             "game": 1,
             "location": "Nashville, TN",
             "time": "2023-09-17T15:00:00.000Z",
-            "name": "Shark Attack Convention"
+            "con_name": "Shark Attack Convention"
         }
     }
 ]

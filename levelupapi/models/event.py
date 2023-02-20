@@ -5,4 +5,4 @@ class Event(models.Model):
     location = models.CharField(max_length=155)
     time = models.DateTimeField(null=True, blank=True, auto_now=False, auto_now_add=False)
     game = models.ForeignKey("Game", on_delete=models.CASCADE, related_name='scheduled_events')
-    name = models.CharField(max_length=50, default="UNKNOWN")
+    con_name = models.CharField(max_length=50, default="UNKNOWN")
