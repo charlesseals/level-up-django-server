@@ -3,7 +3,7 @@ from django.http import HttpResponseServerError
 from rest_framework.viewsets import ViewSet
 from rest_framework.response import Response
 from rest_framework import serializers, status
-from levelupapi.models import Game
+from levelupapi.models import Game, Gamer, GameType
 
 
 class GameView(ViewSet):
@@ -31,9 +31,44 @@ class GameView(ViewSet):
         """
 
 
+    def create(self, request):
+        """Handle POST operations
+
+        Returns
+            Response -- JSON serialized game instance
+        """
+        gamer = Gamer.objects.get(user=request.auth.user)
+        game_type = GameType.objects.get(pk=request.data["game_type"])
+
+        # try:
+        #     description=request.data["description"]
+        # except:
+        #     description=None
+
+        game = Game.objects.create(
+            gamer=gamer,
+            title=request.data["title"],
+            description=request.data["description"],
+            game_type=game_type,
+            designer=request.data["designer"],
+            number_of_players=request.data["number_of_players"],
+            skill_level=request.data["skill_level"]
+        )
+        serializer = GameSerializer(game)
+        return Response(serializer.data)
+
+
+class GamerSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Gamer
+        fields = ('id', 'user', 'bio')
+
 class GameSerializer(serializers.ModelSerializer):
     """JSON serializer for games
     """
+    gamer = GamerSerializer(many=False)
+    
     class Meta:
         model = Game
-        fields = ('id', 'gamer', 'name', 'description', 'game_type', 'designer', 'number_of_players', 'skill_level')
+        fields = ('id', 'gamer', 'title', 'description', 'game_type', 'designer', 'number_of_players', 'skill_level')
+        depth = 1

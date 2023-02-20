@@ -5,7 +5,7 @@
         "fields": {
             "gamer": 1,
             "game_type": 2,
-            "name": "Shark Attack",
+            "title": "Shark Attack",
             "description": "Swim through the ocean as a Great White shark. Eat as many fish as you can to become the biggest shark in the ocean! First shark to grow to 100ft wins!",
             "designer": "CHAWAYSEA Games",
             "number_of_players": 100,
@@ -18,7 +18,7 @@
         "fields": {
             "gamer": 1,
             "game_type": 1,
-            "name": "Falcon Five",
+            "title": "Falcon Five",
             "description": "You and four other friends will fly through the sky as a Perigrine Falcons. Take down as many prey as possible within 10 minutes! The Falcon with the most take downs at the end of the round wins!",
             "designer": "CHAWAYSEA Games",
             "number_of_players": 5,
