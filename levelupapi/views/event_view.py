@@ -22,8 +22,15 @@ class EventView(ViewSet):
 
 
     def list(self, request):
-        game_types = Event.objects.all()
-        serializer = EventSerializer(game_types, many=True)
+        events = Event.objects.all()
+        
+        # game_types = Event.objects.all()
+        # Set the `joined` property on every event
+        for event in events:
+        # Check to see if the gamer is in the attendees list on the event
+            gamer = Gamer.objects.get(user=request.auth.user)
+            event.joined = gamer in event.attendees.all()
+        serializer = EventSerializer(events, many=True)
         return Response(serializer.data)
         """Handle GET requests to get all events
 
@@ -82,6 +89,26 @@ class EventView(ViewSet):
         return Response(None, status=status.HTTP_204_NO_CONTENT)
 
 
+    @action(methods=['post'], detail=True)
+    def signup(self, request, pk):
+        """Post request for a user to sign up for an event"""
+
+        gamer = Gamer.objects.get(user=request.auth.user)
+        event = Event.objects.get(pk=pk)
+        event.attendees.add(gamer)
+        return Response({'message': 'Gamer added'}, status=status.HTTP_201_CREATED)
+    
+    @action(methods=['delete'], detail=True)
+    def leave(self, request, pk):
+        """Post request for a user to sign up for an event"""
+
+        gamer = Gamer.objects.get(user=request.auth.user)
+        event = Event.objects.get(pk=pk)
+        event.attendees.remove(gamer)
+        return Response({'message': 'Gamer removed'}, status=status.HTTP_204_NO_CONTENT)
+
+
+
 class OrganizerSerializer(serializers.ModelSerializer):
     class Meta:
         model = Gamer
@@ -92,5 +119,5 @@ class EventSerializer(serializers.ModelSerializer):
     organizer = OrganizerSerializer(many=False)
     class Meta:
         model = Event
-        fields = ('id', 'organizer', 'location', 'time', 'game', 'con_name')
+        fields = ('id', 'organizer', 'location', 'time', 'game', 'con_name', 'attendees', 'joined')
         
