@@ -10,9 +10,12 @@ class GameView(ViewSet):
     """Level up games view"""
 
     def retrieve(self, request, pk):
-        game_type = Game.objects.get(pk=pk)
-        serializer = GameSerializer(game_type)
-        return Response(serializer.data)
+        try:
+            game_type = Game.objects.get(pk=pk)
+            serializer = GameSerializer(game_type)
+            return Response(serializer.data)
+        except Exception as ex:
+            return Response({"Message": ex.args[0]}, status=status.HTTP_404_NOT_FOUND)
         """Handle GET requests for single game
 
         Returns:
@@ -50,7 +53,7 @@ class GameView(ViewSet):
             skill_level=request.data["skill_level"]
         )
         serializer = GameSerializer(game)
-        return Response(serializer.data)
+        return Response(serializer.data, status=status.HTTP_201_CREATED)
         # try:
         #     description=request.data["description"]
         # except:
